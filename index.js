@@ -5,6 +5,10 @@ const app = express();
 const PORT = 3000;
 
 app.use(cors());
+app.use((req, res, next) => {
+    console.log(`${req.method} request to ${req.url}`);
+    next();
+});
 
 
 
