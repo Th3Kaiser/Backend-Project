@@ -5,14 +5,15 @@ const app = express();
 const PORT = 3000;
 
 app.use(cors());
+app.use(express.json());
 app.use((req, res, next) => {
-    console.log(`${req.method} request to ${req.url}`);
-    next();
+console.log(`${req.method} request to ${req.url}`);
+next();
 });
 app.use('/images', express.static('images'));
 
 app.use('/images', (req, res) => {
-    res.status(404).json({ error: 'Image not found' });
+res.status(404).json({ error: 'Image not found' });
 });
 
 
@@ -29,6 +30,15 @@ const lessons = [
     { LessonID: 9, name: 'Chess Club', Location: 'Hendon', price: 8, time: ' 14:00  ', icon: 'fas fa-chess', availableSlots: 5 },
     { LessonID: 10, name: 'Dance Class', Location: 'Brent Cross', price: 15, time: ' 21:00  ', icon: 'fas fa-music', availableSlots: 5 }
 ];
+
+const orders = [];
+
+app.post('/orders', (req, res) => {
+    const newOrder = req.body;
+    orders.push(newOrder);
+    console.log('New order received:', newOrder);
+    res.json({ message: 'Order placed successfully!', order: newOrder });
+});
 
 app.get('/', (req, res) => {
     res.send('Backend Runs');
