@@ -39,6 +39,29 @@ app.post('/orders', (req, res) => {
     console.log('New order received:', newOrder);
     res.json({ message: 'Order placed successfully!', order: newOrder });
 });
+app.put('/lessons/:id', (req, res) => {
+    const lessonId = Number(req.params.id);
+    let foundLesson = null;
+
+    for (let i = 0; i < lessons.length; i++) {
+        if (lessons[i].LessonID === lessonId) {
+            foundLesson = lessons[i];
+        }
+    }
+
+    if (!foundLesson) {
+        res.status(404).json({ error: 'Lesson not found' });
+        return;
+    }
+
+    if (req.body.availableSlots !== undefined) {
+        foundLesson.availableSlots = req.body.availableSlots;
+    }
+
+    res.json({ message: 'Lesson updated successfully!', lesson: foundLesson });
+});
+
+
 
 app.get('/', (req, res) => {
     res.send('Backend Runs');
