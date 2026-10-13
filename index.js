@@ -1,8 +1,22 @@
 const express = require('express');
 const cors = require('cors');
 
+const { MongoClient } = require('mongodb');
+const config = require('./config');
+
 const app = express();
 const PORT = 3000;
+
+const client = new MongoClient(config.mongoURI);
+let db;
+
+async function connectToDatabase() {
+    await client.connect();
+    db = client.db('AfterSchoolDB');
+    console.log('Connected to MongoDB!');
+}
+
+connectToDatabase();
 
 app.use(cors());
 app.use(express.json());
